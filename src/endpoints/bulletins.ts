@@ -1,36 +1,68 @@
+import { z } from 'zod';
 import call from '../call';
 
 import type { AnslagApiClientOptions } from '../options';
 
-import type { ApiBulletin, ApiBulletinRequest } from '../types';
+import {
+  ApiBulletin,
+  ApiBulletinModel,
+  ApiBulletinRequest,
+  ApiBulletinRequestModel,
+} from '../types';
 
 interface BulletinOperations {
   list: () => Promise<ApiBulletin[]>;
   get: (id: string) => Promise<ApiBulletin>;
   create: (bulletin: ApiBulletinRequest) => Promise<ApiBulletin>;
   update: (id: string, bulletin: ApiBulletinRequest) => Promise<ApiBulletin>;
-  delete: (id: string) => Promise<ApiBulletin>;
+  delete: (id: string) => Promise<void>;
 }
 
 export const bulletinOperations = (
   opts: AnslagApiClientOptions,
 ): BulletinOperations => ({
-  list: async () =>
-    await call<undefined, ApiBulletin[]>('GET', `/bulletins`, { ...opts }),
-  get: async (id) =>
-    await call<undefined, ApiBulletin>('GET', `/bulletins/${id}`, { ...opts }),
-  create: async (bulletin) =>
-    await call<ApiBulletinRequest, ApiBulletin>('POST', `/bulletins`, {
+  list: async () => {
+    const bulletins = await call<undefined, ApiBulletin[]>(
+      'GET',
+      `/bulletins`,
+      {
+        ...opts,
+      },
+    );
+    return z.array(ApiBulletinModel).parse(bulletins);
+  },
+  get: async (id) => {
+    const res = await call<undefined, ApiBulletin>('GET', `/bulletins/${id}`, {
       ...opts,
-      body: bulletin,
-    }),
-  update: async (id, bulletin) =>
-    await call<ApiBulletinRequest, ApiBulletin>('PUT', `/bulletins/${id}`, {
-      ...opts,
-      body: bulletin,
-    }),
+    });
+    return ApiBulletinModel.parse(res);
+  },
+  create: async (bulletin) => {
+    const body = ApiBulletinRequestModel.parse(bulletin);
+    const res = await call<ApiBulletinRequest, ApiBulletin>(
+      'POST',
+      `/bulletins`,
+      {
+        ...opts,
+        body,
+      },
+    );
+    return ApiBulletinModel.parse(res);
+  },
+  update: async (id, bulletin) => {
+    const body = ApiBulletinRequestModel.parse(bulletin);
+    const res = await call<ApiBulletinRequest, ApiBulletin>(
+      'PUT',
+      `/bulletins/${id}`,
+      {
+        ...opts,
+        body,
+      },
+    );
+    return ApiBulletinModel.parse(res);
+  },
   delete: async (id) =>
-    await call<undefined, ApiBulletin>('DELETE', `/bulletins/${id}`, {
+    await call<undefined, undefined>('DELETE', `/bulletins/${id}`, {
       ...opts,
     }),
 });

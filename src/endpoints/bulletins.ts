@@ -6,15 +6,20 @@ import type { AnslagApiClientOptions } from '../options';
 import {
   ApiBulletin,
   ApiBulletinModel,
-  ApiBulletinRequest,
-  ApiBulletinRequestModel,
+  ApiBulletinCreateRequest,
+  ApiBulletinCreateRequestModel,
+  ApiBulletinUpdateRequest,
+  ApiBulletinUpdateRequestModel,
 } from '../types';
 
 interface BulletinOperations {
   list: () => Promise<ApiBulletin[]>;
   get: (id: string) => Promise<ApiBulletin>;
-  create: (bulletin: ApiBulletinRequest) => Promise<ApiBulletin>;
-  update: (id: string, bulletin: ApiBulletinRequest) => Promise<ApiBulletin>;
+  create: (bulletin: ApiBulletinCreateRequest) => Promise<ApiBulletin>;
+  update: (
+    id: string,
+    bulletin: ApiBulletinUpdateRequest,
+  ) => Promise<ApiBulletin>;
   delete: (id: string) => Promise<void>;
 }
 
@@ -38,8 +43,8 @@ export const bulletinOperations = (
     return ApiBulletinModel.parse(res);
   },
   create: async (bulletin) => {
-    const body = ApiBulletinRequestModel.parse(bulletin);
-    const res = await call<ApiBulletinRequest, ApiBulletin>(
+    const body = ApiBulletinCreateRequestModel.parse(bulletin);
+    const res = await call<ApiBulletinCreateRequest, ApiBulletin>(
       'POST',
       `/bulletins`,
       {
@@ -50,8 +55,8 @@ export const bulletinOperations = (
     return ApiBulletinModel.parse(res);
   },
   update: async (id, bulletin) => {
-    const body = ApiBulletinRequestModel.parse(bulletin);
-    const res = await call<ApiBulletinRequest, ApiBulletin>(
+    const body = ApiBulletinUpdateRequestModel.parse(bulletin);
+    const res = await call<ApiBulletinUpdateRequest, ApiBulletin>(
       'PUT',
       `/bulletins/${id}`,
       {

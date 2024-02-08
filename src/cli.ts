@@ -83,6 +83,8 @@ void (async () => {
       data: [{ test2: 'test2' }],
       type: 'test2',
       tags: ['test2'],
+      archived: false,
+      updated_at: bulletin.updated_at,
     });
     console.log(updatedBulletin);
 

@@ -16,13 +16,24 @@ export const ApiBulletinModel = z.object({
 });
 export type ApiBulletin = z.infer<typeof ApiBulletinModel>;
 
-export const ApiBulletinRequestModel = z.object({
+export const ApiBulletinCreateRequestModel = z.object({
   name: z.string(),
   data: z.array(z.unknown()),
   type: z.string(),
   tags: z.string().array(),
 });
-export type ApiBulletinRequest = z.infer<typeof ApiBulletinRequestModel>;
+export type ApiBulletinCreateRequest = z.infer<
+  typeof ApiBulletinCreateRequestModel
+>;
+
+export const ApiBulletinUpdateRequestModel =
+  ApiBulletinCreateRequestModel.extend({
+    archived: z.boolean(),
+    updated_at: z.string().datetime({ offset: true }),
+  });
+export type ApiBulletinUpdateRequest = z.infer<
+  typeof ApiBulletinUpdateRequestModel
+>;
 
 export const ApiTagModel = z.object({
   id: z.string().uuid(),

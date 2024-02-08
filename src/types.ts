@@ -13,6 +13,7 @@ export const ApiBulletinModel = z.object({
   data: z.array(z.unknown()),
   type: z.string(),
   tags: z.string().array(),
+  archived: z.boolean(),
 });
 export type ApiBulletin = z.infer<typeof ApiBulletinModel>;
 

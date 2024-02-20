@@ -10,6 +10,7 @@ export const ApiBulletinModel = z.object({
   deleted_at: z.string().datetime({ offset: true }).optional(),
   deleted_by: z.string().optional(),
   name: z.string(),
+  description: z.string().optional(),
   data: z.array(z.unknown()),
   type: z.string(),
   tags: z.string().array(),

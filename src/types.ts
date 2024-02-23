@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const ApiBulletinModel = z.object({
   id: z.string().uuid(),
-  organization_id: z.string(),
+  organization_id: z.string().min(1),
   created_at: z.string().datetime({ offset: true }),
   created_by: z.string(),
   updated_at: z.string().datetime({ offset: true }),

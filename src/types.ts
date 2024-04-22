@@ -11,18 +11,20 @@ export const ApiBulletinModel = z.object({
   deleted_by: z.string().optional(),
   name: z.string(),
   description: z.string().optional(),
-  data: z.array(z.unknown()),
   type: z.string(),
-  tags: z.string().array(),
+  thumbnail: z.string().optional(),
   archived: z.boolean(),
+  data: z.array(z.unknown()),
+  tags: z.string().array(),
 });
 export type ApiBulletin = z.infer<typeof ApiBulletinModel>;
 
 export const ApiBulletinCreateRequestModel = z.object({
   name: z.string(),
-  data: z.array(z.unknown()),
   type: z.string(),
+  thumbnail: z.string(),
   tags: z.string().array(),
+  data: z.array(z.unknown()),
 });
 export type ApiBulletinCreateRequest = z.infer<
   typeof ApiBulletinCreateRequestModel
@@ -30,8 +32,8 @@ export type ApiBulletinCreateRequest = z.infer<
 
 export const ApiBulletinUpdateRequestModel =
   ApiBulletinCreateRequestModel.extend({
-    archived: z.boolean(),
     updated_at: z.string().datetime({ offset: true }),
+    archived: z.boolean(),
   });
 export type ApiBulletinUpdateRequest = z.infer<
   typeof ApiBulletinUpdateRequestModel
@@ -41,10 +43,14 @@ export const ApiTagModel = z.object({
   id: z.string().uuid(),
   organization_id: z.string(),
   name: z.string(),
+  color: z.string(),
+  text_color: z.string(),
 });
 export type ApiTag = z.infer<typeof ApiTagModel>;
 
 export const ApiTagRequestModel = z.object({
   name: z.string(),
+  color: z.string(),
+  text_color: z.string(),
 });
 export type ApiTagRequest = z.infer<typeof ApiTagRequestModel>;

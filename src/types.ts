@@ -21,6 +21,7 @@ export type ApiBulletin = z.infer<typeof ApiBulletinModel>;
 
 export const ApiBulletinCreateRequestModel = z.object({
   name: z.string(),
+  description: z.string(),
   type: z.string(),
   thumbnail: z.string(),
   tags: z.string().array(),

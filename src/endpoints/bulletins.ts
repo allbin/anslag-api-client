@@ -14,6 +14,7 @@ import {
 
 interface BulletinOperations {
   list: () => Promise<ApiBulletin[]>;
+  listArchived: () => Promise<ApiBulletin[]>;
   get: (id: string) => Promise<ApiBulletin>;
   create: (bulletin: ApiBulletinCreateRequest) => Promise<ApiBulletin>;
   update: (
@@ -30,6 +31,16 @@ export const bulletinOperations = (
     const bulletins = await call<undefined, ApiBulletin[]>(
       'GET',
       `/bulletins`,
+      {
+        ...opts,
+      },
+    );
+    return z.array(ApiBulletinModel).parse(bulletins);
+  },
+  listArchived: async () => {
+    const bulletins = await call<undefined, ApiBulletin[]>(
+      'GET',
+      `/bulletins/archived`,
       {
         ...opts,
       },

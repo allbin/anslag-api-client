@@ -13,6 +13,7 @@ export const ApiBulletinModel = z.object({
   description: z.string().optional(),
   type: z.string(),
   thumbnail: z.string().optional(),
+  image: z.string().optional(),
   archived: z.boolean(),
   data: z.array(z.unknown()),
   tags: z.string().array(),
@@ -24,6 +25,7 @@ export const ApiBulletinCreateRequestModel = z.object({
   description: z.string(),
   type: z.string(),
   thumbnail: z.string(),
+  image: z.string().optional(),
   tags: z.string().array(),
   data: z.array(z.unknown()),
 });

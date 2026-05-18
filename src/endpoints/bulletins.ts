@@ -22,6 +22,7 @@ interface BulletinOperations {
     bulletin: ApiBulletinUpdateRequest,
   ) => Promise<ApiBulletin>;
   delete: (id: string) => Promise<void>;
+  deleteImage: (id: string) => Promise<void>;
 }
 
 export const bulletinOperations = (
@@ -79,6 +80,10 @@ export const bulletinOperations = (
   },
   delete: async (id) =>
     await call<undefined, undefined>('DELETE', `/bulletins/${id}`, {
+      ...opts,
+    }),
+  deleteImage: async (id) =>
+    await call<undefined, undefined>('DELETE', `/bulletins/${id}/image`, {
       ...opts,
     }),
 });
